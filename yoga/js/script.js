@@ -130,68 +130,68 @@ window.addEventListener('DOMContentLoaded', function () {
         if (target && target.classList.contains('menu-item')) {
             
             // давно придуманный велосипед
-            // for (let i = 0; i < menuItems.length; i++) {
-            //     if (target == menuItems[i]) {
-            //         document.querySelector(menuItems[i].getAttribute('href')).scrollIntoView({
-            //             behavior: 'smooth',
-            //             block: 'start'
-            //         });
-            //     }
-            // }
-
-            // мой велосипед
             for (let i = 0; i < menuItems.length; i++) {
                 if (target == menuItems[i]) {
-                    let margin = 20,
-                        startDistance = refs[i].getBoundingClientRect().top - menuPanel.clientHeight - margin,
-                        step = 0,
-                        distance = 0,
-                        velocity = 0,
-                        interval = 0.6,
-                        acceleration = startDistance/Math.pow(interval/2, 2),
-                        int = 10,
-                        timeInt = setInterval(goTo, int);
-                    
-                    if (i == 0) {
-                        margin = 60;
-                    }
-
-                    //функция движения с постоянным ускорением
-                    function goTo() {
-                        distance = refs[i].getBoundingClientRect().top - menuPanel.clientHeight - margin;
-                        //сравниваем с максимальной скоростью на середине пути
-                        if (velocity == acceleration*(interval/2)) {
-                            acceleration = -startDistance/Math.pow(interval/2, 2);
-                        }
-                        velocity += acceleration * int/1000;
-                        step = velocity * int/1000;
-                        //сравниваем с 0, на случай плохой сетки
-                        if (velocity == 0) {
-                            step = distance;
-                        }
-                        //сравниваем с 1, на случай близкого расстояния
-                        if (step < 1 && step > 0) {
-                            step = 1;
-                        }
-                        if (step > -1 && step < 0) {
-                            step = -1;
-                        }
-                        //сравниваем с текущим расстоянием
-                        if ((step < distance && startDistance >= 0) || (step > distance && startDistance < 0)) {
-                            scrollBy(0, step);
-                        } else {
-                            scrollBy(0, distance);
-                        }
-
-                        distance = refs[i].getBoundingClientRect().top - menuPanel.clientHeight - margin;
-                        // console.log(distance, step, velocity, acceleration);
-
-                        if (distance == 0) {
-                            clearInterval(timeInt);
-                        }
-                    }
+                    document.querySelector(menuItems[i].getAttribute('href')).scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
                 }
             }
+
+            // мой велосипед (есть баги)
+            // for (let i = 0; i < menuItems.length; i++) {
+            //     if (target == menuItems[i]) {
+            //         let margin = 20,
+            //             startDistance = refs[i].getBoundingClientRect().top - menuPanel.clientHeight - margin,
+            //             step = 0,
+            //             distance = 0,
+            //             velocity = 0,
+            //             interval = 0.6,
+            //             acceleration = startDistance/Math.pow(interval/2, 2),
+            //             int = 10,
+            //             timeInt = setInterval(goTo, int);
+                    
+            //         if (i == 0) {
+            //             margin = 60;
+            //         }
+
+            //         //функция движения с постоянным ускорением
+            //         function goTo() {
+            //             distance = refs[i].getBoundingClientRect().top - menuPanel.clientHeight - margin;
+            //             //сравниваем с максимальной скоростью на середине пути
+            //             if (velocity == acceleration*(interval/2)) {
+            //                 acceleration = -startDistance/Math.pow(interval/2, 2);
+            //             }
+            //             velocity += acceleration * int/1000;
+            //             step = velocity * int/1000;
+            //             //сравниваем с 0, на случай плохой сетки
+            //             if (velocity == 0) {
+            //                 step = distance;
+            //             }
+            //             //сравниваем с 1, на случай близкого расстояния
+            //             if (step < 1 && step > 0) {
+            //                 step = 1;
+            //             }
+            //             if (step > -1 && step < 0) {
+            //                 step = -1;
+            //             }
+            //             //сравниваем с текущим расстоянием
+            //             if ((step < distance && startDistance >= 0) || (step > distance && startDistance < 0)) {
+            //                 scrollBy(0, step);
+            //             } else {
+            //                 scrollBy(0, distance);
+            //             }
+
+            //             distance = refs[i].getBoundingClientRect().top - menuPanel.clientHeight - margin;
+            //             // console.log(distance, step, velocity, acceleration);
+
+            //             if (distance == 0) {
+            //                 clearInterval(timeInt);
+            //             }
+            //         }
+            //     }
+            // }
         }
     });
 
@@ -216,6 +216,7 @@ window.addEventListener('DOMContentLoaded', function () {
                     //если не мобильное устройство, то добавляем анимацию
                     if (!/Android|webOS|iPhone|iPad|iPod|BlackBerry|BB|PlayBook|IEMobile|Windows Phone|Kindle|Silk|Opera Mini/i.test(navigator.userAgent)) {
                         more.classList.add('more-splash');
+                        tabBtns[i].classList.add('more-splash');
                         fade.classList.add('fade');
                     }
                     //показываем модальное окно
