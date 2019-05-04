@@ -197,7 +197,7 @@ window.addEventListener('DOMContentLoaded', function () {
 
     // Модальное окна
     // проверяем на браузер
-    if (navigator.userAgent.search(/MSIE/) == -1 && navigator.userAgent.search(/EDGE/) == -1) {
+    if (navigator.userAgent.search(/MSIE/i) == -1 && navigator.userAgent.search(/EDGE/i) == -1) {
         let more = document.querySelector('.more > a'),
             overlay = document.querySelector('.overlay'),
             close = document.querySelector('.popup-close'),
