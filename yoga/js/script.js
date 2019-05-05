@@ -218,13 +218,7 @@ window.addEventListener('DOMContentLoaded', function () {
                     more.classList.add('more-splash');
                     tabBtns[i].classList.add('more-splash');
                     fade.classList.add('fade');
-                }
-
-                overlay.style.display = 'block';
-                document.body.style.overflow = 'hidden';
-                overlay.classList.add('activeOverlay');
-
-                if (!/Android|webOS|iPhone|iPad|iPod|BlackBerry|BB|PlayBook|IEMobile|Windows Phone|Kindle|Silk|Opera Mini/i.test(navigator.userAgent)) {
+                } else if (!/Android|webOS|iPhone|iPad|iPod|BlackBerry|BB|PlayBook|IEMobile|Windows Phone|Kindle|Silk|Opera Mini/i.test(navigator.userAgent)) {
                     //js анимация
                     overlay.style.top = '50%';
                     overlay.style.left = '50%';
@@ -290,6 +284,10 @@ window.addEventListener('DOMContentLoaded', function () {
                         tabBtns[i].style.boxShadow = '0 0 ' + shadow + 'px #c78030';
                     }
                 }
+                
+                overlay.style.display = 'block';
+                document.body.style.overflow = 'hidden';
+                overlay.classList.add('activeOverlay');
             }
         }
     });
