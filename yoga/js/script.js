@@ -231,6 +231,14 @@ window.addEventListener('DOMContentLoaded', function () {
                     overlay.style.width = '0%';
                     overlay.style.height = '0%';
                     popup.style.left = '-50%';
+                    let shadow = 10;
+
+                    if (event.target == more) {
+                        more.style.boxShadow = '0 0 ' + shadow + 'px #c78030';
+                    }
+                    if (event.target == tabBtns[i]) {
+                        tabBtns[i].style.boxShadow = '0 0 ' + shadow + 'px #c78030';
+                    }
     
                     function overlayAnimation (pos1, pos2, int) {
                         let id = setInterval(frameOverlay, int);
@@ -242,7 +250,13 @@ window.addEventListener('DOMContentLoaded', function () {
                             overlay.style.left = parseInt(overlay.style.left) - plus + '%';
                             overlay.style.width = parseInt(overlay.style.width) + 2 * plus + '%';
                             overlay.style.height = parseInt(overlay.style.height) + 2 * plus + '%';
-        
+                            if (event.target == more) {
+                                more.style.boxShadow = '0 0 ' + ++shadow + 'px #c78030';
+                            }
+                            if (event.target == tabBtns[i]) {
+                                tabBtns[i].style.boxShadow = '0 0 ' + ++shadow + 'px #c78030';
+                            }
+
                             if (parseInt(overlay.style.top) <= pos1) {
                                 clearInterval(id);
 
@@ -255,6 +269,13 @@ window.addEventListener('DOMContentLoaded', function () {
                                 
                                     if (parseInt(popup.style.left) >= pos2) {
                                         clearInterval(id);
+                                        if (event.target == more) {
+                                            shadow = 0;
+                                            more.style.boxShadow = '0 0 ' + shadow + 'px #c78030';                                        }
+                                        if (event.target == tabBtns[i]) {
+                                            shadow = 0;
+                                            tabBtns[i].style.boxShadow = '0 0 ' + shadow + 'px #c78030';
+                                        }
                                     }
                                 }
                             }
@@ -265,6 +286,8 @@ window.addEventListener('DOMContentLoaded', function () {
                     }
                     if (event.target == tabBtns[i]) {
                         overlayAnimation(0, 50, 5);
+                        shadow = 10;
+                        tabBtns[i].style.boxShadow = '0 0 ' + shadow + 'px #c78030';
                     }
                 }
             }
