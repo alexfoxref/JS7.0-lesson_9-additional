@@ -184,7 +184,7 @@ window.addEventListener('DOMContentLoaded', function () {
             //             }
 
             //             distance = refs[i].getBoundingClientRect().top - menuPanel.clientHeight - margin;
-            //             // console.log(distance, step, velocity, acceleration);
+            //             console.log(distance, step, velocity, acceleration);
 
             //             if (distance == 0) {
             //                 clearInterval(timeInt);
@@ -195,60 +195,97 @@ window.addEventListener('DOMContentLoaded', function () {
         }
     });
 
-    // Модальное окна
-    // проверяем на браузер
-    if (navigator.userAgent.search(/MSIE/i) == -1 && navigator.userAgent.search(/EDGE/i) == -1) {
-        let more = document.querySelector('.more > a'),
-            overlay = document.querySelector('.overlay'),
-            close = document.querySelector('.popup-close'),
-            popup = document.querySelector('.overlay *'),
-            tabBtns = document.querySelectorAll('.description-btn > a'),
-            fade = document.querySelectorAll('.fade')[8];
+    // Модальные окна
+    let more = document.querySelector('.more'),
+        overlay = document.querySelector('.overlay'),
+        close = document.querySelector('.popup-close'),
+        popup = document.querySelector('.overlay > *'),
+        tabBtns = document.querySelectorAll('.description-btn'),
+        fade = document.querySelectorAll('.fade')[8];
 
-        console.log('+');
+    document.body.addEventListener('click', function (event) {
+        event.preventDefault();
+        for (let i = 0; i < tabBtns.length; i++) {
+            
+            if (event.target && (event.target == more || event.target == tabBtns[i])) {
+                overlay.style.display = 'block';
+                document.body.style.overflow = 'hidden';
 
-        document.body.addEventListener('click', function (event) {
-            event.preventDefault();
-            for (let i = 0; i < tabBtns.length; i++) {
-                if (event.target && (event.target == more || event.target == tabBtns[i])) {
-                    //удаляем анимацию изначально
-                    fade.classList.remove('fade');
-                    //если не мобильное устройство, то добавляем анимацию
-                    if (!/Android|webOS|iPhone|iPad|iPod|BlackBerry|BB|PlayBook|IEMobile|Windows Phone|Kindle|Silk|Opera Mini/i.test(navigator.userAgent)) {
-                        more.classList.add('more-splash');
-                        tabBtns[i].classList.add('more-splash');
-                        fade.classList.add('fade');
+                more.classList.remove('more-splash');
+                tabBtns[i].classList.remove('more-splash');
+                fade.classList.remove('fade');
+    
+                if (/Msie|Edge/i.test(navigator.userAgent)) {
+                    more.classList.add('more-splash');
+                    tabBtns[i].classList.add('more-splash');
+                    fade.classList.add('fade');
+                }
+                if (!/Android|webOS|iPhone|iPad|iPod|BlackBerry|BB|PlayBook|IEMobile|Windows Phone|Kindle|Silk|Opera Mini/i.test(navigator.userAgent)) {
+                    //js анимация
+                    overlay.style.top = '50%';
+                    overlay.style.left = '50%';
+                    overlay.style.width = '0%';
+                    overlay.style.height = '0%';
+                    popup.style.left = '-50%';
+    
+                    function overlayAnimation (pos1, pos2, int) {
+                        let id = setInterval(frameOverlay, int);
+    
+                        function frameOverlay() {
+                            let plus = 1;
+    
+                            overlay.style.top = parseInt(overlay.style.top) - plus + '%';
+                            overlay.style.left = parseInt(overlay.style.left) - plus + '%';
+                            overlay.style.width = parseInt(overlay.style.width) + 2 * plus + '%';
+                            overlay.style.height = parseInt(overlay.style.height) + 2 * plus + '%';
+        
+                            if (parseInt(overlay.style.top) <= pos1) {
+                                clearInterval(id);
+
+                                id = setInterval(framePopup, int);
+
+                                function framePopup() {
+                                    let plus = 1;
+
+                                    popup.style.left = parseInt(popup.style.left) + 2 * plus + '%';
+                                
+                                    if (parseInt(popup.style.left) >= pos2) {
+                                        clearInterval(id);
+                                    }
+                                }
+                            }
+                        }
                     }
-                    //показываем модальное окно
-                    overlay.style.display = 'block';
-                    //запрещаем прокрутку страницы
-                    document.body.style.overflow = 'hidden';
+                    if (event.target == more) {
+                        overlayAnimation(3, 44, 20);
+                    }
+                    if (event.target == tabBtns[i]) {
+                        overlayAnimation(0, 50, 5);
+                    }
                 }
             }
-        });
+        }
+    });
 
-        // скрываем при нажатии на крестик
-        close.addEventListener('click', function (event) {
-            event.preventDefault();
+    // скрываем при нажатии на крестик
+    close.addEventListener('click', function () {
+        overlay.style.display = 'none';
+        more.classList.remove('more-splash');
+        for (let i = 0; i < tabBtns.length; i++) {
+            tabBtns[i].classList.remove('more-splash');
+        }
+        document.body.style.overflow = '';
+    });
+    // скрываем при нажатии в область вне модального окна
+    overlay.addEventListener('click', function(event) {
+        if (event.target && !popup.contains(event.target)) {
             overlay.style.display = 'none';
             more.classList.remove('more-splash');
             for (let i = 0; i < tabBtns.length; i++) {
                 tabBtns[i].classList.remove('more-splash');
             }
             document.body.style.overflow = '';
-        });
-        // скрываем при нажатии в область вне модального окна
-        overlay.addEventListener('click', function(event) {
-            event.preventDefault();
-            if (event.target && !popup.contains(event.target)) {
-                overlay.style.display = 'none';
-                more.classList.remove('more-splash');
-                for (let i = 0; i < tabBtns.length; i++) {
-                    tabBtns[i].classList.remove('more-splash');
-                }
-                document.body.style.overflow = '';
-            }
-        });
-    }
+        }
+    });
 
 });
