@@ -113,6 +113,7 @@ window.addEventListener('DOMContentLoaded', function () {
     // Плавная прокрутка пунктов меню
     let menuPanel = document.querySelector('ul'),
         menuItems = document.querySelectorAll('li > a'),
+        overlay = document.querySelector('.overlay'),
         refs = [
             document.querySelector('.info-header'),
             document.querySelector('.slider-title'),
@@ -124,80 +125,80 @@ window.addEventListener('DOMContentLoaded', function () {
     });
     menuPanel.addEventListener('click', function(event) {
         event.preventDefault();
+        if (!overlay.classList.contains('activeOverlay')) {
+            let target = event.target;
 
-        let target = event.target;
-
-        if (target && target.classList.contains('menu-item')) {
-            
-            // давно придуманный велосипед
-            for (let i = 0; i < menuItems.length; i++) {
-                if (target == menuItems[i]) {
-                    document.querySelector(menuItems[i].getAttribute('href')).scrollIntoView({
-                        behavior: 'smooth',
-                        block: 'start'
-                    });
+            if (target && target.classList.contains('menu-item')) {
+                
+                // давно придуманный велосипед
+                for (let i = 0; i < menuItems.length; i++) {
+                    if (target == menuItems[i]) {
+                        document.querySelector(menuItems[i].getAttribute('href')).scrollIntoView({
+                            behavior: 'smooth',
+                            block: 'start'
+                        });
+                    }
                 }
+    
+                // мой велосипед (есть баги)
+                // for (let i = 0; i < menuItems.length; i++) {
+                //     if (target == menuItems[i]) {
+                //         let margin = 20,
+                //             startDistance = refs[i].getBoundingClientRect().top - menuPanel.clientHeight - margin,
+                //             step = 0,
+                //             distance = 0,
+                //             velocity = 0,
+                //             interval = 0.6,
+                //             acceleration = startDistance/Math.pow(interval/2, 2),
+                //             int = 10,
+                //             timeInt = setInterval(goTo, int);
+                        
+                //         if (i == 0) {
+                //             margin = 60;
+                //         }
+    
+                //         //функция движения с постоянным ускорением
+                //         function goTo() {
+                //             distance = refs[i].getBoundingClientRect().top - menuPanel.clientHeight - margin;
+                //             //сравниваем с максимальной скоростью на середине пути
+                //             if (velocity == acceleration*(interval/2)) {
+                //                 acceleration = -startDistance/Math.pow(interval/2, 2);
+                //             }
+                //             velocity += acceleration * int/1000;
+                //             step = velocity * int/1000;
+                //             //сравниваем с 0, на случай плохой сетки
+                //             if (velocity == 0) {
+                //                 step = distance;
+                //             }
+                //             //сравниваем с 1, на случай близкого расстояния
+                //             if (step < 1 && step > 0) {
+                //                 step = 1;
+                //             }
+                //             if (step > -1 && step < 0) {
+                //                 step = -1;
+                //             }
+                //             //сравниваем с текущим расстоянием
+                //             if ((step < distance && startDistance >= 0) || (step > distance && startDistance < 0)) {
+                //                 scrollBy(0, step);
+                //             } else {
+                //                 scrollBy(0, distance);
+                //             }
+    
+                //             distance = refs[i].getBoundingClientRect().top - menuPanel.clientHeight - margin;
+                //             console.log(distance, step, velocity, acceleration);
+    
+                //             if (distance == 0) {
+                //                 clearInterval(timeInt);
+                //             }
+                //         }
+                //     }
+                // }
             }
-
-            // мой велосипед (есть баги)
-            // for (let i = 0; i < menuItems.length; i++) {
-            //     if (target == menuItems[i]) {
-            //         let margin = 20,
-            //             startDistance = refs[i].getBoundingClientRect().top - menuPanel.clientHeight - margin,
-            //             step = 0,
-            //             distance = 0,
-            //             velocity = 0,
-            //             interval = 0.6,
-            //             acceleration = startDistance/Math.pow(interval/2, 2),
-            //             int = 10,
-            //             timeInt = setInterval(goTo, int);
-                    
-            //         if (i == 0) {
-            //             margin = 60;
-            //         }
-
-            //         //функция движения с постоянным ускорением
-            //         function goTo() {
-            //             distance = refs[i].getBoundingClientRect().top - menuPanel.clientHeight - margin;
-            //             //сравниваем с максимальной скоростью на середине пути
-            //             if (velocity == acceleration*(interval/2)) {
-            //                 acceleration = -startDistance/Math.pow(interval/2, 2);
-            //             }
-            //             velocity += acceleration * int/1000;
-            //             step = velocity * int/1000;
-            //             //сравниваем с 0, на случай плохой сетки
-            //             if (velocity == 0) {
-            //                 step = distance;
-            //             }
-            //             //сравниваем с 1, на случай близкого расстояния
-            //             if (step < 1 && step > 0) {
-            //                 step = 1;
-            //             }
-            //             if (step > -1 && step < 0) {
-            //                 step = -1;
-            //             }
-            //             //сравниваем с текущим расстоянием
-            //             if ((step < distance && startDistance >= 0) || (step > distance && startDistance < 0)) {
-            //                 scrollBy(0, step);
-            //             } else {
-            //                 scrollBy(0, distance);
-            //             }
-
-            //             distance = refs[i].getBoundingClientRect().top - menuPanel.clientHeight - margin;
-            //             console.log(distance, step, velocity, acceleration);
-
-            //             if (distance == 0) {
-            //                 clearInterval(timeInt);
-            //             }
-            //         }
-            //     }
-            // }
         }
     });
 
     // Модальные окна
     let more = document.querySelector('.more'),
-        overlay = document.querySelector('.overlay'),
         close = document.querySelector('.popup-close'),
         popup = document.querySelector('.overlay > *'),
         tabBtns = document.querySelectorAll('.description-btn'),
@@ -208,8 +209,6 @@ window.addEventListener('DOMContentLoaded', function () {
         for (let i = 0; i < tabBtns.length; i++) {
             
             if (event.target && (event.target == more || event.target == tabBtns[i])) {
-                overlay.style.display = 'block';
-                document.body.style.overflow = 'hidden';
 
                 more.classList.remove('more-splash');
                 tabBtns[i].classList.remove('more-splash');
@@ -220,6 +219,11 @@ window.addEventListener('DOMContentLoaded', function () {
                     tabBtns[i].classList.add('more-splash');
                     fade.classList.add('fade');
                 }
+
+                overlay.style.display = 'block';
+                document.body.style.overflow = 'hidden';
+                overlay.classList.add('activeOverlay');
+
                 if (!/Android|webOS|iPhone|iPad|iPod|BlackBerry|BB|PlayBook|IEMobile|Windows Phone|Kindle|Silk|Opera Mini/i.test(navigator.userAgent)) {
                     //js анимация
                     overlay.style.top = '50%';
@@ -275,6 +279,7 @@ window.addEventListener('DOMContentLoaded', function () {
             tabBtns[i].classList.remove('more-splash');
         }
         document.body.style.overflow = '';
+        overlay.classList.remove('activeOverlay');
     });
     // скрываем при нажатии в область вне модального окна
     overlay.addEventListener('click', function(event) {
@@ -285,6 +290,7 @@ window.addEventListener('DOMContentLoaded', function () {
                 tabBtns[i].classList.remove('more-splash');
             }
             document.body.style.overflow = '';
+            overlay.classList.remove('activeOverlay');
         }
     });
 
